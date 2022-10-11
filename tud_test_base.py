@@ -34,3 +34,4 @@ def set_keyboard_input(mocked_inputs):
 
     mock_input_output_start()
     input_values = mocked_inputs
+
