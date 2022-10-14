@@ -1,3 +1,9 @@
+commit ca2ce92cf043c445256aa0f1faad7c233b648545
+Author: John Ha <johnha@Johns-MBP-36.home>
+Date:   Wed Oct 12 20:39:03 2022 -0400
+
+    Wednesday 10-12
+
 commit 84cfd50a02a8858c8f30c6607974e4d90e37d4f2
 Merge: 23fec95 bca0892
 Author: Raymond Gillies <77136295+rgillies1@users.noreply.github.com>
@@ -18,7 +24,7 @@ Author: John Ha <johnha@Johns-MBP-36.home>
 Date:   Tue Oct 11 18:01:16 2022 -0400
 
     Part 3 Incollege
-`
+
 commit 23fec95c59ce0278fa263766dbebf0f9629aec89
 Merge: fc2f0b7 5901dd9
 Author: Raymond Gillies <77136295+rgillies1@users.noreply.github.com>
