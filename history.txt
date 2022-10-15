@@ -1,3 +1,9 @@
+commit 9e825f08b59e9606338e57b84ea6b211c3499d1e 
+Author: John Ha <johnha@Johns-MBP-36.home>
+Date:   Thu Oct 13 20:24:45 2022 -0400
+
+    Thrusday 10-13
+    
 commit ca2ce92cf043c445256aa0f1faad7c233b648545
 Author: John Ha <johnha@Johns-MBP-36.home>
 Date:   Wed Oct 12 20:39:03 2022 -0400
