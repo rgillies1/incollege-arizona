@@ -4,6 +4,7 @@
 *Used for pytest inputs and outputs
 '''
 import builtins
+import os
 
 input_values = []
 print_values = []
@@ -35,3 +36,18 @@ def set_keyboard_input(mocked_inputs):
     mock_input_output_start()
     input_values = mocked_inputs
 
+
+def clearFile(fileName):
+    os.remove(fileName)
+    f = open(fileName, "x")
+    f.close()
+
+
+def writeToFile(fileName, lineToWrite):
+    with open(fileName, "w") as file:
+        file.write(lineToWrite)
+
+
+def appendToFile(fileName, lineToAppend):
+    with open(fileName, "a") as file:
+        file.write(lineToAppend)

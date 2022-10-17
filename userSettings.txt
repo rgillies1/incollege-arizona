@@ -1,0 +1,12 @@
+Dominos={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Pizzahut={'email': False, 'sms_notif': False, 'targets_advertising': False, 'language': 'en-US'}
+Dominos={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Popeyes={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Pizzahut={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Starbucks={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Dunkins={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Tacobell={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Wendys={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+Pollotrop={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+McDis={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
+BurgerKing={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
