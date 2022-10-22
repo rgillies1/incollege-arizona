@@ -1,3 +1,5 @@
+from importantLinks import importantLinks
+from usefulLinks import usefulLinks
 def newSkill():#New Skill Page, still under construction
     print(
         "1. Study Habits \n2. Creative Thinking \n3. Critical Thinking \n4. Work/School Life Balance \n5. Scheduling \n6. importantLinks \n7. return back to landing page"

@@ -1,5 +1,4 @@
-from database import getFriendRequests, removeFriendRequest, getFriends, addFriend, removeFriend 
-
+from database import getFriendRequests, removeFriendRequest, getFriends, addFriend, removeFriend
 def friendNetwork(
 ):  #Friend Network Page, add and remove friend functionality here
     choice = -1

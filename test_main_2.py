@@ -1,9 +1,6 @@
-#import pytest
-
+from unittest import mock
+from testing_base import get_display_output, set_keyboard_input,clearTables,addNewUsers,addContacts
 import main
-from tud_test_base import get_display_output, set_keyboard_input, clearFile, writeToFile, appendToFile
-import os
-
 
 def test_main_and_video_then_exit():  #Display the new login space
     set_keyboard_input(["Video", "Exit"])
@@ -12,47 +9,35 @@ def test_main_and_video_then_exit():  #Display the new login space
     output = get_display_output()
     assert "Video is now playing...\n" in output
 
+def test_connect_users():
+  clearTables()
+  addNewUsers()
+  addNewUsers()
 
-def test_connect_users():  #Test the connect uses function and inviting option
-    clearFile("userList.txt")
-    writeToFile(
-        "userList.txt",
-        "Dominos, Dominos2@, Dom, Inos, English, Culinary Arts, USF\n")
-    appendToFile(
-        "userList.txt",
-        "Popeyes, Popeyes@2, David, Hamilton, English, ComputerEngineering, FSU\n"
-    )
-    set_keyboard_input([
-        "Login", "Dominos", "Dominos2@", "2", "David", "Hamilton", "y",
-        "Walter", "White", "n", "y", "MF", "DOOM", "y", "Exit"
-    ])
-    main.main()
-    output = get_display_output()
+  for _ in range(8):
+    addContacts()
 
-    foundAndInSystem = "They are a part of the InCollege system!" in output
-    foundButNotInSystem = "Contact found but they are not yet part of the InCollege system" in output
-    notFound = "They are not yet a part of the InCollege system yet!" in output
+  login = [ "Login", "Dominos", "Dominos@2", "2" ]
+  part_of_system = ["David", "Hamilton", "y"]
+  not_part_contact = ["Santi", "Pinkman", "y"]
+  not_part_no_contact = ["Walter", "White", "y"]
+  exit = ["Exit", "Exit"]
 
-    assert foundAndInSystem and foundButNotInSystem and notFound
+  set_keyboard_input(login + part_of_system + not_part_contact + not_part_no_contact + exit)
+  main.main()
 
+  output = get_display_output()
 
-#Test Job Posting Creation
+  foundAndInSystem = "They are a part of the InCollege system!" in output
+  foundButNotInSystem = "Contact found but they are not yet part of the InCollege system" in output
+  notFound = "They are not yet a part of the InCollege system yet!" in output
+
+  assert foundAndInSystem and foundButNotInSystem and notFound
+
 def test_job_posting():
-    clearFile("jobList.txt")
+    login = [ "Login", "Dominos", "Dominos@2", "1", "2" ]
+    job_1 = [ "Intern", "you intern", "Big Inc", "Tampa Fl", "$15/hour" ]
+    job_2 = [ "Cook", "you cook", "Cookers Inc", "Tampa Fl", "$12/hour" ]
 
-    set_keyboard_input([
-        "Login", "Dominos", "Dominos2@", "1", "2", "Intern", "you intern",
-        "Big Inc", "Tampa Fl", "$15/hour", "2", "Cook", "you cook",
-        "Cookers Inc", "Tampa Fl", "$12/hour", "2", "Intern", "you intern",
-        "Big Inc", "Tampa Fl", "$15/hour", "2", "Cook", "you cook",
-        "Cookers Inc", "Tampa Fl", "$12/hour", "2", "Intern", "you intern",
-        "Big Inc", "Tampa Fl", "$15/hour", "9", "Exit", "Exit"
-    ])
+    set_keyboard_input(login + job_1 + ["2"] + job_2)
     main.main()
-
-    with open("jobList.txt", "r") as jobs:
-        lines = jobs.readlines()
-        assert lines.count(
-            "Intern| you intern| Big Inc| Tampa Fl| $15/hour| None\n") == 3
-        assert lines.count(
-            "Cook| you cook| Cookers Inc| Tampa Fl| $12/hour| None\n") == 2

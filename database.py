@@ -25,8 +25,8 @@ def tables(connection = sqlite3.connect("inCollege.db")):
   firstName TEXT, 
   lastName TEXT UNIQUE, 
   language TEXT DEFAULT 'ENGLISH', 
-  major TEXT, 
-  college TEXT, 
+  --major TEXT, 
+  --college TEXT, 
   FOREIGN KEY(id) REFERENCES UserLogin(id));""")
 
   #User settings info
@@ -68,7 +68,36 @@ def tables(connection = sqlite3.connect("inCollege.db")):
   location TEXT NOT NULL, 
   salary TEXT NOT NULL,
   poster TEXT NOT NULL);""")
-  
+
+  #Profiles for each user - john is working on this 
+  connection.execute("""CREATE TABLE IF NOT EXISTS Profiles
+  (id INTEGER UNIQUE, 
+  title TEXT, 
+  about TEXT, 
+  --experience TEXT,
+  --education TEXT, 
+  FOREIGN KEY(id) REFERENCES UserLogin(id));""")
+
+  #Job Experience, tied into profiles
+  connection.execute("""CREATE TABLE IF NOT EXISTS JobExperience
+  (id INTEGER,
+  jobNum INTEGER,
+  jobTitle TEXT, 
+  employer TEXT, 
+  startDate TEXT,
+  endDate TEXT,
+  location TEXT,
+  description TEXT,
+  FOREIGN KEY(id) REFERENCES UserLogin(id));""")#ID not unique, they can have upto 3 entries added into this
+
+  #Education, tied into Profile
+  connection.execute("""CREATE TABLE IF NOT EXISTS Education
+  (id INTEGER UNIQUE, 
+  university TEXT, 
+  major TEXT, 
+  degree TEXT,
+  years INTEGER, 
+  FOREIGN KEY(id) REFERENCES UserLogin(id));""")#Currently only one college can be tied to each account so ID stays unique 
   connection.commit()
 
 
@@ -87,13 +116,14 @@ def allRecords(table,connection = sqlite3.connect("inCollege.db")):#Returns all 
 def exist(table,col,val,connection = sqlite3.connect("inCollege.db")):#Returns true if val is in list of values in col
   return (val) in connection.execute("SELECT "+col+" FROM "+table+";").fetchall()
 
-def newAccount(username,password,firstName,lastName,major,college,email,phone,connection = sqlite3.connect("inCollege.db")):
-  #Saves Login Info
+#def newAccount(username,password,firstName,lastName,major,college,email,phone,connection = sqlite3.connect("inCollege.db")):
+def newAccount(username,password,firstName,lastName,email,phone,connection = sqlite3.connect("inCollege.db")):
+   #Saves Login Info
   connection.execute("INSERT INTO UserLogin (username,password) VALUES ('{0}','{1}');".format(username,password))
   #Retrieves UserId
   userId = connection.execute("SELECT id FROM UserLogin WHERE username = '{0}';".format(username)).fetchone()[0]
   #Saves User Data
-  connection.execute("INSERT INTO UserData (id,firstName,lastName,major,college) VALUES ({0},'{1}','{2}','{3}','{4}')".format(userId,firstName,lastName,major,college))
+  connection.execute("INSERT INTO UserData (id,firstName,lastName) VALUES ({0},'{1}','{2}')".format(userId,firstName,lastName))
   #Creates and defaults user Settings
   connection.execute("INSERT INTO UserSettings (id) VALUES ({0})".format(userId))
   #Makes sure contact information exists
@@ -105,10 +135,18 @@ def newAccount(username,password,firstName,lastName,major,college,email,phone,co
     connection.execute("INSERT INTO Contacts (id,firstName,lastName,email,phone) VALUES ({0},'{1}','{2}','{3}','{4}')".format(userId,firstName,lastName,email,phone))
   #Creates friend records
   connection.execute("INSERT INTO FriendNetwork (id) VALUES ({0});".format(userId))
+  #Creates Profile Page record
+  connection.execute("INSERT INTO Profiles (id) VALUES ({0});".format(userId))
+  #Creates Education record for Profiles
+  connection.execute("INSERT INTO Education (id) VALUES ({0});".format(userId))
+  
   connection.commit()
 
 def authLogin(username,password,connection = sqlite3.connect("inCollege.db")):#Authenticates User and creates Cookie for future authentication
-  if(password == connection.execute("SELECT password FROM UserLogin WHERE username = '{0}'".format(username)).fetchone()[0]):
+  p=connection.execute("SELECT password FROM UserLogin WHERE username = '{0}'".format(username)).fetchone()
+  if(p==None):
+    return 0
+  if(password == p[0]):
     userId = connection.execute("SELECT id FROM UserLogin WHERE username = '{0}';".format(username)).fetchone()[0]
     
     if(connection.execute("SELECT * FROM ActiveUsers WHERE id = {0};".format(userId)).fetchall()!=[]):#User is logged on already
@@ -163,10 +201,12 @@ def updateUser(table,col,val,userId=-1,connection = sqlite3.connect("inCollege.d
   connection.commit()
 
 def findUser(lastName="%",university="%",major="%",connection = sqlite3.connect("inCollege.db")):#Find user in UserData
-  return connection.execute("SELECT id, firstName, lastName FROM UserData WHERE lastName LIKE '{0}' AND college LIKE '{1}' AND major LIKE '{2}';".format(lastName,university,major)).fetchall()#'%' is wildcard in SQL
+  if(lastName!="%"):
+    return connection.execute("SELECT id,firstName,lastName FROM userData WHERE lastName LIKE '%{0}%';".format(lastName)).fetchall()
+  return connection.execute("SELECT UserData.id, UserData.firstName, UserData.lastName FROM UserData JOIN Education ON UserData.id = Education.id WHERE Education.university LIKE '{0}' AND Education.major LIKE '{1}';".format(university,major)).fetchall()#'%' is wildcard in SQL
 
 def findContact(firstName="%",lastName="%",connection = sqlite3.connect("inCollege.db")):#Find contact in Contacts
-  return connection.execute("SELECT id, firstName, lastName FROM ContactList WHERE lastName = '{0}' AND firstName = '{1}';".format(lastName,firstName)).fetchone()
+  return connection.execute("SELECT id, firstName, lastName FROM Contacts WHERE lastName = '{0}' AND firstName = '{1}';".format(lastName,firstName)).fetchone()
 
 
 def addContact(firstName,lastName,phone,email,connection = sqlite3.connect("inCollege.db")):#Adds mew contact to Contacts
@@ -279,3 +319,93 @@ def removeFriend(friendId,userId=-1,connection = sqlite3.connect("inCollege.db")
   connection.execute("UPDATE FriendNetwork SET friendIds = '{0}' WHERE id = {1};".format(myFriends,userId))
   connection.execute("UPDATE FriendNetwork SET friendIds = '{0}' WHERE id = {1};".format(friendFriends,friendId))
   connection.commit()
+
+def getUserFirstLastName(userId=-1,connection = sqlite3.connect("inCollege.db")):#Returns username, firstname, lastname
+  if(userId==-1):
+    userId=authUser()[1]
+  if(userId==None):
+    pass
+  return connection.execute("SELECT UserLogin.username, UserData.firstName, UserData.lastName FROM UserData JOIN UserLogin ON UserLogin.id = UserData.id WHERE UserData.id = {0};".format(userId)).fetchall()[0]
+  
+def getJobExperience(userId=-1,connection = sqlite3.connect("inCollege.db")):#Returns all job experience data
+  if(userId==-1):
+    userId=authUser()[1]
+  if(userId==None):
+    pass
+  return connection.execute("SELECT jobNum,jobTitle, employer, startDate, endDate, location, description FROM JobExperience WHERE id = {0} ORDER BY jobNum ASC;".format(userId)).fetchall()#Fetch all because there can be up to 3 entries
+
+def getEducation(userId=-1,connection = sqlite3.connect("inCollege.db")):#Returns all education data
+  if(userId==-1):
+    userId=authUser()[1]
+  if(userId==None):
+    pass
+  return connection.execute("SELECT university, major, degree, years FROM Education WHERE id = {0};".format(userId)).fetchall()[0]
+
+def getProfile(userId=-1,connection = sqlite3.connect("inCollege.db")):#Returns all profile information
+  if(userId==-1):
+    userId=authUser()[1]
+  if(userId==None):
+    pass
+  return connection.execute("SELECT title, about FROM Profiles WHERE id = {0};".format(userId)).fetchall()[0]
+#----------------------------------------------------------------------------------
+def setJobExperience(jobNum=None,jobTitle=None, employer=None, startDate=None, endDate=None, location=None, description=None, userId=-1,connection = sqlite3.connect("inCollege.db")):#sets all job experience data
+  if(userId==-1):
+    userId=authUser()[1]
+  if(userId==None or (jobNum==None and jobTitle==None and employer==None and startDate==None and endDate==None and location==None and description==None)):
+    pass
+  if(jobNum==-1):
+    count=len(connection.execute("SELECT * FROM JobExperience WHERE id = {0}".format(userId)).fetchall())
+    if(count>=3):
+      print("Only 3 Job Experiences can be recoreded at this time")
+      return None
+    elif(count>=0):
+      jobNum=count+1
+      connection.execute("INSERT INTO JobExperience (id,jobNum) VALUES ({0},{1});".format(userId,jobNum))
+    else:
+      return None
+  if(jobTitle!=None):
+    connection.execute("UPDATE JobExperience SET jobTitle = '{0}' WHERE id = {1} AND jobNum = {2};".format(jobTitle,userId,jobNum))
+    
+  if(employer!=None):
+    connection.execute("UPDATE JobExperience SET employer = '{0}' WHERE id = {1} AND jobNum = {2};".format(employer,userId,jobNum))
+    
+  if(startDate!=None):
+    connection.execute("UPDATE JobExperience SET startDate = '{0}' WHERE id = {1} AND jobNum = {2};".format(startDate,userId,jobNum))
+    
+  if(endDate!=None):
+    connection.execute("UPDATE JobExperience SET endDate = '{0}' WHERE id = {1} AND jobNum = {2};".format(endDate,userId,jobNum))
+    
+  if(location!=None):
+    connection.execute("UPDATE JobExperience SET location = '{0}' WHERE id = {1} AND jobNum = {2};".format(location,userId,jobNum))
+              
+  if(description!=None):
+    connection.execute("UPDATE JobExperience SET description = '{0}' WHERE id = {1} AND jobNum = {2};".format(description,userId,jobNum))
+  connection.commit()
+  # return connection.execute("SELECT jobNum, jobTitle, employer, startDate, endDate, location, description FROM JobExperience WHERE id = {0};".format(userId)).fetchall()#Fetch all because there can be up to 3 entries
+
+def setEducation(university=None, major=None, degree=None, years=None, userId=-1,connection = sqlite3.connect("inCollege.db")):#Sets education data
+  if(userId==-1):
+    userId=authUser()[1]
+  if(userId==None or (university==None and major==None and degree==None and years==None)):
+    pass
+  if(university!=None):
+    connection.execute("UPDATE Education SET university = '{0}' WHERE id = {1};".format(university,userId))
+  if(major!=None):
+    connection.execute("UPDATE Education SET major = '{0}' WHERE id = {1};".format(major,userId))
+  if(degree!=None):
+    connection.execute("UPDATE Education SET degree = '{0}' WHERE id = {1};".format(degree,userId))
+  if(years!=None):
+    connection.execute("UPDATE Education SET years = {0} WHERE id = {1};".format(years,userId))
+  connection.commit()
+
+def setProfile(title=None, about=None, userId=-1,connection = sqlite3.connect("inCollege.db")):#setProfile title and about
+  if(userId==-1):
+    userId=authUser()[1]
+  if(userId==None or (title==None and about==None)):
+    pass
+  if(title!=None):
+    connection.execute("UPDATE Profiles SET title = '{0}' WHERE id = {1};".format(title,userId))
+  if(about!=None):
+    connection.execute("UPDATE Profiles SET about = '{0}' WHERE id = {1};".format(about,userId))
+  connection.commit()
+  # return connection.execute("SELECT title, about FROM Profiles WHERE id = {0};".format(userId)).fetchall()[0]

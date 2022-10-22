@@ -4,7 +4,7 @@ from database import allRecords,getRecordCount,newJobPost
 
 def jobSearch():#Job search page
     table = "JobBoard"
-    print("~~~~Job Board~~~~\n\n1. Job Board \n2. Post a job \n3. importantLinks \n4. usefulLinks \n9. Back\n")
+    print("~~~~Job Board~~~~\n\n1. Job Board \n2. Post a job \n3. UsefulLinks \n4. ImportantLinks \n9. Back\n")
     option = int(input("Please select an option from the list above: "))
     titleList = []
     descriptionList = []
@@ -62,9 +62,10 @@ def jobSearch():#Job search page
 
     elif option == 9:#Exit
         pass
-    elif option == 3:#Important Links
-        importantLinks()
-        jobSearch()
-    elif option == 4:#Usful Links
+    
+    elif option == 3:#Usful Links
         usefulLinks()
+        jobSearch()
+    elif option == 4:#Important Links
+        importantLinks()
         jobSearch()

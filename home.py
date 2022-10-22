@@ -21,17 +21,17 @@ def homePage():
             "\n\nWelcome to InCollege! \nTo Log in to an existing InCollege account TYPE: Login \nTo create a new InCollege account TYPE: Signup\nTo view a video highlighting the advantages of joining InCollege TYPE: Video"
         )
         option = input(
-            "\nLogin | Signup | Video | UsefulLinks | importantLinks | Exit: ")
+            "\nLogin | Signup | Video | UsefulLinks | ImportantLinks | Exit: ")
         if option == "Login":
             if(login()):
-                  landingPage()
+                landingPage()
         elif option == "Signup":
             signup()
         elif option == "Video":
             print("Video is now playing...\n")
         elif option == "UsefulLinks":
             usefulLinks()
-        elif option == "importantLinks":
+        elif option == "ImportantLinks":
             importantLinks()
         elif option == "Exit":
             stay = False

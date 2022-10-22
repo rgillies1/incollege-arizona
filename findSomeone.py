@@ -18,7 +18,7 @@ def searchStudents():#Search users on the system
                 students.pop(i)
                 i-=1
                 continue
-            print("{0}. {1} {2}".format(i+1,students[i][1],lname))
+            print("{0}. {1} {2}".format(i+1,students[i][1],students[i][2]))
         if(len(students)>0):
             option = int(input("Select user from list to send friend request to, or Press 0 to go back: "))
             if(option>0 or option <= len(students)):
@@ -29,6 +29,8 @@ def searchStudents():#Search users on the system
             searchStudents()
 
     elif choice == 2:#Search via major
+        #print("NOT WORKING CURRENTLY AS MAJOR STORAGE LOCATION CHANGED AS OF 10/20")
+        #searchStudents()
         major = input("Enter their major: ")  #for major in list of majors
         students = findUser(major=major)
         for i in range(0,len(students)):
@@ -47,6 +49,8 @@ def searchStudents():#Search users on the system
             searchStudents()
           
     elif choice == 3:#Search via university names
+        #print("NOT WORKING CURRENTLY AS UNIVERSITY STORAGE LOCATION CHANGED AS OF 10/20")
+        #searchStudents()
         uni = input("Enter the name of University: "
                     )  #for university in list of universities
         students = findUser(university=uni)

@@ -33,9 +33,9 @@ def signup(exit="n"):#Signs up user
     global university
     #usernameList = getUserInfo()[0]
   
-    if(exit=="yes"):#Allows exit if they want to give up trying to sign up
+    if(exit=="y"):#Allows exit if they want to give up trying to sign up
         pass
-      
+    
     if getRecordCount() >= 10:  #maximum 10 accounts permitted
         print(
             "ERROR: All permitted accounts have been created, please come back later"
@@ -66,11 +66,12 @@ def signup(exit="n"):#Signs up user
                 # IN-15: also ask for first and last name
                 fname = input("Enter your first name: ")
                 lname = input("Enter your last name: ")
-                major = input("Enter your major: ")
-                university = input("Enter your university: ")
+                #major = input("Enter your major: ")
+                #university = input("Enter your university: ")
                 email = input("Enter your email: ")
                 phone = input("Enter your phone number(Please Format Like ###-###-####): ")
-                newAccount(username,pwd1,fname,lname,major,university,email,phone)         
+                #newAccount(username,pwd1,fname,lname,major,university,email,phone)
+                newAccount(username,pwd1,fname,lname,email,phone)
             else:
                 print(
                     "ERROR: Please ensure that the password follows all the requirements!"

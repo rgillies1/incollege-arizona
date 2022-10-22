@@ -18,5 +18,5 @@ def login():#Login screen
         print("Incorrect username / password, please try again.")
         exit = input("Would you like to exit (y/n): ")
         if(exit!="y"):#Allows you to exit login
-            login()
+            return login()
     return False
