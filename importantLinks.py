@@ -1,10 +1,11 @@
 from login import login
 from database import updateUser,authUser
+#from login import logged_in, loggedin_user
 
-def changelanguage(userLogin):#Updates language of the logged in user
+def changelanguage():#Updates language of the logged in user
     replace_language = "Spanish"
     search_language = "English"
-    updateUser("UserSettings","Language","es-mx")#Missing userId
+    updateUser("UserSettings","Language", search_language)#Missing userId, #"es-mx"
     updateUser("UserData","Language",replace_language)#Missing userId
 
 def GuestControls():#Disables different user settings
@@ -43,7 +44,8 @@ def GuestControls():#Disables different user settings
 
 #In college important links option
 def importantLinks():
-    global logged_in
+    #global logged_in
+    logged_in = True
     print("\n*********Important Links*********")
     print(
         "1. Copyright Notice \n2. About \n3. Accessibility \n4. User Agreement \n5. Privacy Policy \n6. Cookie policy \n7. Copyright Policy \n8. Brand Policy \n9. Languages \n10. return back to main"
@@ -113,15 +115,15 @@ def importantLinks():
     elif input_selection == 9:
         #check if the user is signed in
         #then prompts that language is changed to spanish
-        if logged_in == True:
+        if authUser()[0] == True:
             input_gen = int(
                 input(
                     "Press 1 to change language settings from English to Spanish or Press 0 to go back: "
                 ))
             if input_gen == 1:
-                changelanguage(loggedin_user)
+                changelanguage()
                 print("Language successfully changed from English to Spanish!")
-                return None
+                importantLinks()
             elif input_gen == 0:
                 importantLinks()
             else:

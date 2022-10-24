@@ -8,7 +8,7 @@ def addNewUsers(i=-1):#Adds users one at a time.  if no user is specified it goe
 ["Pizzahut", "Pizzahut@2", "John", "Ha", "piz@piz.com", "222-222-2222"],
 ["Starbucks", "Starbucks@2", "Arthur", "Gusmao De Almeida", "star@star.com", "333-333-3333"],
 ["Dunkins", "Dunkins@2", "Raymond", "Gillies", "dunk@dunk.com", "444-444-4444"],
-["Tacobell", "Tacobell@2", "Mo", "Haque", "taco@taco.com", "555-555-5555"],
+["Tacobell", "Tacobell@2", "Mo", "Haq", "taco@taco.com", "555-555-5555"],
 ["Wendys", "Wendys@2", "David", "H", "wen@wen.com", "666-666-6666"],
 ["Pollotrop", "Pollotrop@2", "Jacob", "Hawk", "pol@pol.com", "777-777-7777"],
 ["McDonalds", "McDonalds@2", "Lucas", "Firmino", "mc@mc.com", "888-888-8888"],

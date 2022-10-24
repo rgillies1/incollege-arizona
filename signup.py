@@ -34,13 +34,13 @@ def signup(exit="n"):#Signs up user
     #usernameList = getUserInfo()[0]
   
     if(exit=="y"):#Allows exit if they want to give up trying to sign up
-        pass
-    
+        return None
+      
     if getRecordCount() >= 10:  #maximum 10 accounts permitted
         print(
             "ERROR: All permitted accounts have been created, please come back later"
         )
-        pass
+        return None
     else:
         username = input("Enter a username: ")
 
@@ -53,13 +53,13 @@ def signup(exit="n"):#Signs up user
     if exist(table, "username", username):#checks to see if values already exist in db
         print("ERROR: Username already exist!")
         exit = input("Would you like to exit(y/n):")
-        signup(exit)
+        return signup(exit)
     else:
         #Check if password are the same
         if pwd1 != pwd2:
             print("ERROR: Password does not match: ")
             exit = input("Would you like to exit(y/n):")
-            signup(exit)
+            return signup(exit)
         else:
             #if password and username meets the requirements we can append it to the file
             if checkPassword(pwd1) == True:
@@ -77,4 +77,4 @@ def signup(exit="n"):#Signs up user
                     "ERROR: Please ensure that the password follows all the requirements!"
                 )
                 exit = input("Would you like to exit(y/n):")
-                signup(exit)
+                return signup(exit)
