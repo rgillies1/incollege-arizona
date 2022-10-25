@@ -28,6 +28,6 @@ def test_Guest_Controls(GuestControls_mock):
 #need to fix this 
 @mock.patch("importantLinks.changelanguage")
 def test_changelanguage(changelanguage_mock):
-    set_keyboard_input(["\nLogin", "Dominos", "Dominos@2", "8", "9", "1", "Exit", "Exit"])
+    set_keyboard_input(["Login", "Dominos", "Dominos@2", "8", "9", "1", "10", "Exit", "Exit"])
     main.main()
     changelanguage_mock.assert_called()

@@ -4,8 +4,7 @@ from database import updateUser,authUser
 
 def changelanguage():#Updates language of the logged in user
     replace_language = "Spanish"
-    search_language = "English"
-    updateUser("UserSettings","Language", search_language)#Missing userId, #"es-mx"
+    updateUser("UserSettings","Language", "es-mx")#Missing userId, #"es-mx"
     updateUser("UserData","Language",replace_language)#Missing userId
 
 def GuestControls():#Disables different user settings
