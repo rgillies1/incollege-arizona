@@ -1,4 +1,5 @@
 from database import findContact,findUser,addContact,newFriendRequest
+from signup import validName,validPhone,validEmail
 
 def searchStudents():#Search users on the system
     print("\nFind a student you know!")
@@ -82,38 +83,58 @@ def findSomeone():#Find someone that may not be on InCollege and add new users c
         "Enter a first and last name and we'll let you know if they're on InCollege!"
     )
     while True:
-        fname = input("Enter their first name: ")
+        fname = input("\nEnter their first name: ")
         lname = input("Enter their last name: ")
-        search = findContact(fname,lname)
-        if search==None:
-            print("They are not yet a part of the InCollege system yet!")
-            option = ""
-            while option != "y" and option != "n":
-                option = input(
-                    "Would you like to invite contact? \nYou will be logged out after providing contact information. (y/n): "
+        valid,fname,lname = validName(fname,lname)
+        if(not valid):
+            print("Invalid input detected in either first name or last name.  If you believe this to be an error, please contact us through the information that is currently not provided.")
+        if(valid):      
+            search = findContact(fname,lname)
+            if search==None:
+                print("They are not yet a part of the InCollege system yet!")
+                option = ""
+                while option != "y" and option != "n":
+                    option = input(
+                        "Would you like to invite contact? \nYou will be logged out after providing contact information. (y/n): "
+                    )
+                    if option == "n":
+                        break
+                    elif option == "y":
+                        valid = False
+                        while not valid:
+                            phone = input("\nPlease provide their phone number(Format: '###-###-####'): ")
+                            valid = validPhone(phone)
+                            if(not valid):
+                                print("Invalid input detected in phone number provided.  If you believe this to be an error, please contact us through the information that is currently not provided.")
+                                exit=input("Would you like to exit?(y/n): ")
+                                if(exit=='y'):
+                                    return None
+                        valid = False 
+                        while not valid:
+                            email = input("\nPlease provide their email:")
+                            valid = validEmail(email)
+                            if(not valid):
+                                print("Invalid input detected in email provided.  If you believe this to be an error, please contact us through the information that is currently not provided.")
+                                exit=input("Would you like to exit?(y/n): ")
+                                if(exit=='y'):
+                                    return None
+                        addContact(fname,lname,phone,email)
+                        pass
+            elif(search[0]!=None):
+                print("They are a part of the InCollege system!")
+            elif (search[0]==None):
+                print(
+                    "Contact found but they are not yet part of the InCollege system"
                 )
-                if option == "n":
-                    break
-                elif option == "y":
-                    phone = input("Please provide their phone number(Format: '###-###-####'): ")
-                    email = input("Please provide their email: ")
-                    addContact(fname,lname,phone,email)
-                    pass
-        elif(search[0]!=None):
-            print("They are a part of the InCollege system!")
-        elif (search[0]==None):
-            print(
-                "Contact found but they are not yet part of the InCollege system"
-            )
-            option = ""
-            while option != "y" and option != "n":
-                option = input(
-                    "Would you like to invite contact? \nYou will be logged out. (y/n): "
-                )
-                if option == "n":
-                    break
-                elif option == "y":
-                    pass
+                option = ""
+                while option != "y" and option != "n":
+                    option = input(
+                        "Would you like to invite contact? \nYou will be logged out. (y/n): "
+                    )
+                    if option == "n":
+                        break
+                    elif option == "y":
+                        pass
         exit = ""
         while exit != "y" and exit != "n":
             exit = input(
