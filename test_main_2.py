@@ -54,7 +54,7 @@ def test_job_posting(capsys):
 
     jobBoard = allRecords("JobBoard")
 
-    job_1_t = tuple(job_1 + ["Mohammed Haque"])
-    job_2_t = tuple(job_2 + ["Mohammed Haque"])
+    job_1_t = tuple([1]+job_1 + ["Mohammed Haque",1])
+    job_2_t = tuple([2]+job_2 + ["Mohammed Haque",1])
 
     assert job_1_t in jobBoard and job_2_t in jobBoard
