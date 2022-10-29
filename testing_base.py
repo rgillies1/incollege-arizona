@@ -15,11 +15,13 @@ def addNewUsers(i=-1):#Adds users one at a time.  if no user is specified it goe
 ["BurgerKing", "BurgerKing@2", "Santi", "Pinkman", "burg@burg.com", "999-999-9999"]]
   if(i==-1):
     i=getRecordCount()
+  if(i==len(users)):
+    return None
   a,b,c,d,e,f=users[i]
   newAccount(a,b,c,d,e,f)
 
 def addContacts(i=-1):
-  users = [["Mohammed", "Haque", "dom@dom.com", "100-000-0000"],
+  contacts = [["Mohammed", "Haque", "dom@dom.com", "100-000-0000"],
 ["David", "Hamilton", "pop@pop.com", "211-111-1111"],
 ["John", "Ha", "piz@piz.com", "322-222-2222"],
 ["Arthur", "Gusmao De Almeida", "star@star.com", "433-333-3333"],
@@ -31,10 +33,11 @@ def addContacts(i=-1):
 ["Santi", "Pinkman", "burg@burg.com", "990-999-9999"]]
   if(i==-1):
     i=getRecordCount("Contacts")
-  a,b,c,d=users[i]
+  if(i==len(contacts)):
+    return None
+  a,b,c,d=contacts[i]
   addContact(a,b,c,d)
   
-
 def clearTable(table):#Input table name to drop table and then it is rebuilt
   customCommand("DROP TABLE IF EXISTS {0};".format(table))
   tables()

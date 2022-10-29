@@ -27,7 +27,7 @@ def tables(connection=sqlite3.connect("inCollege.db")):
   firstName TEXT, 
   lastName TEXT UNIQUE, 
   language TEXT DEFAULT 'ENGLISH',
-  savedJobs TEXT DEFAULT ' ' NOT NULL,
+  savedJobs TEXT DEFAULT '' NOT NULL,
   --major TEXT, 
   --college TEXT, 
   FOREIGN KEY(id) REFERENCES UserLogin(id));""")
@@ -87,6 +87,15 @@ def tables(connection=sqlite3.connect("inCollege.db")):
     gradDate TEXT,
     application TEXT,
     toBeDeleted INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY(id) REFERENCES UserLogin(id),
+    FOREIGN KEY(jobPostId) REFERENCES JobBoard(jobPostId));""")
+
+    #Saved
+    connection.execute("""CREATE TABLE IF NOT EXISTS Saved
+    (id INTEGER,
+    position TEXT NOT NULL,
+    jobPostId INTEGER,
+    savedStat INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY(id) REFERENCES UserLogin(id),
     FOREIGN KEY(jobPostId) REFERENCES JobBoard(jobPostId));""")
 
@@ -171,7 +180,7 @@ def newAccount(username,
             username)).fetchone()[0]
     #Saves User Data
     connection.execute(
-        "INSERT INTO UserData (id,firstName,lastName) VALUES ({0},'{1}','{2}')"
+        "INSERT INTO UserData (id,firstName,lastName,savedJobs) VALUES ({0},'{1}','{2}', '')"
         .format(userId, firstName, lastName))
     #Creates and defaults user Settings
     connection.execute(
@@ -347,7 +356,6 @@ def newJobPost(jobTitle,
         .format(jobTitle, jobDescription, jobEmployer, jobLocation, jobSalary,
                 fullName, userId))
     connection.commit()
-    print(connection.execute("SELECT * FROM JobBoard").fetchall())
 
 
 def newFriendRequest(
@@ -711,12 +719,6 @@ def getOthersJobs(userId=-1,
         .format(userId)).fetchall()
 
 
-def removeJobPost(jobPostId, connection=sqlite3.connect("inCollege.db")):#Removes job post, updates Applications to be deleted, and removes saved jobs
-    connection.execute("UPDATE Applications SET toBeDeleted = 1 WHERE jobPostId = {0};".format(jobPostId))
-    connection.execute(
-        "DELETE FROM JobBoard WHERE jobPostId = {0};".format(jobPostId))
-    connection.commit()
-
 def removeJobApplication(jobPostId,userId = -1, connection=sqlite3.connect("inCollege.db")):
     if (userId == -1):
         userId = authUser()[1]
@@ -764,34 +766,74 @@ def getJobTitles(jobPostId, connection=sqlite3.connect("inCollege.db")):
         "SELECT position FROM JobBoard WHERE jobPostId = {0};".format(jobPostId )).fetchall()[0]
 
 def getSavedJobs(userId=-1, connection=sqlite3.connect("inCollege.db")):# Returns the saved jobs jobIds and position names in a list tuple
-    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}").fetchall()
+    if (userId == -1):
+        userId = authUser()[1]
+    if (userId == None):
+        pass
+    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}".format(userId)).fetchone()[0]
+    if(jobs==""):
+        return None
     jobIds = jobs.split(",")
+    print(jobs)
     savedJobsIdsAndPositions = []
     for id in jobIds:
-        posit = connection.execute("SELECT position FROM JobBoard WHERE id = {0}".format(id)).fetchall()[0][0]
+        posit = connection.execute("SELECT position FROM JobBoard WHERE jobPostId = {0}".format(id)).fetchone()[0]
         savedJobsIdsAndPositions.append((id,posit))
     return savedJobsIdsAndPositions
   
 def saveJobs(jobPostId,userId=-1, connection=sqlite3.connect("inCollege.db")):
-    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}".format(userId)).fetchall()[0]
-    if jobPostId in jobs: 
+    if (userId == -1):
+        userId = authUser()[1]
+    if (userId == None):
         pass
+    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}".format(userId)).fetchall()[0][0]
+    if(jobs == None or jobs == ""):
+        jobs = str(jobPostId)
+    elif(str(jobPostId) in jobs): 
+        return None
     else:
-        print(jobs,jobPostId)
-        if jobs == "":
-            jobs = str(jobPostId)
-        else:
-            jobs+=","+str(jobPostId)
+        jobs=jobs[0]
+        jobs+=","+str(jobPostId)
+    connection.execute("UPDATE UserData SET savedJobs = '{0}' WHERE id = {1};".format(jobs,userId))
+    connection.commit()
+
+def removeSavedJobs(jobPostId,userId=-1, connection=sqlite3.connect("inCollege.db")):
+    if (userId == -1):
+        userId = authUser()[1]
+    if (userId == None):
+        pass
+    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}".format(userId)).fetchall()
+    if(jobs == []):
+        return None
+    jobs = jobs[0][0]
+    if str(jobPostId) in jobs: 
+        jobs = jobs.replace(str(jobPostId),"")
+        jobs = jobs.replace(",,",",")
+        if(jobs[-1]==","):
+            jobs=jobs[0:-1]
+          
         connection.execute("UPDATE UserData SET savedJobs = '{0}' WHERE id = {1};".format(jobs,userId))
         connection.commit()
 
-def removeSavedJobs(jobPostId,userId=-1, connection=sqlite3.connect("inCollege.db")):
-    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}").fetchall()
-    if jobPostId in jobs: 
-        if(str(jobPostId)+"," in jobs):
-            jobs.replace(str(jobPostId)+",","")
-        elif(str(jobPostId) in jobs):
-            jobs.replace(str(jobPostId),"")
-        connection.execute("UPDATE UserData SET savedJobs = '{0}' WHERE id = {1};".format(jobs,userId))
-        connection.commit()
-      
+
+def removeJobPost(jobPostId, connection=sqlite3.connect("inCollege.db")):#Removes job post, updates Applications to be deleted, and removes saved jobs
+    connection.execute("UPDATE Applications SET toBeDeleted = 1 WHERE jobPostId = {0};".format(jobPostId))
+    connection.execute(
+        "DELETE FROM JobBoard WHERE jobPostId = {0};".format(jobPostId))
+    connection.commit()
+    allIds = connection.execute("SELECT id FROM UserLogin").fetchall()
+    for id in allIds:
+        removeSavedJobs(id[0])
+
+
+
+
+
+    #   #Saved
+    # connection.execute("""CREATE TABLE IF NOT EXISTS Saved
+    # (id INTEGER,
+    # position TEXT NOT NULL,
+    # jobPostId INTEGER,
+    # savedStat INTEGER NOT NULL DEFAULT 0,
+    # FOREIGN KEY(id) REFERENCES UserLogin(id),
+    # FOREIGN KEY(jobPostId) REFERENCES JobBoard(jobPostId));""")

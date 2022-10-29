@@ -6,6 +6,7 @@ import main
 
 # Test if the program can be exited by typing 'Exit'
 def test_main_exit():
+    clearTables()
     # In reality, if we call main and input "Exit" and it returns at all, then it should pass
     set_keyboard_input(["Exit"])
     ret = main.main()
