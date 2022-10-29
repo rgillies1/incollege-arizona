@@ -47,7 +47,7 @@ def test_job_posting(capsys):
     job_1 = ["Intern", "you intern", "Big Inc", "Tampa Fl", "$15/hour"]
     job_2 = ["Cook", "you cook", "Cookers Inc", "Tampa Fl", "$12/hour"]
     bad_job = ["\n", "\0", "'", "\"", "null"]
-    exit = ["9", "Exit", "Exit"]
+    exit = ["Exit", "Exit", "Exit"]
 
     set_keyboard_input(login + job_1 + ["2"] + job_2 + ["2"] + bad_job + exit)
     main.main()

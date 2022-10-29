@@ -48,6 +48,7 @@ def clearTables():#Clears and renews all tables
   customCommand("DROP TABLE IF EXISTS FriendNetwork;")
   customCommand("DROP TABLE IF EXISTS FriendRequest;")
   customCommand("DROP TABLE IF EXISTS JobBoard;")
+  customCommand("DROP TABLE IF EXISTS Applications;")
   customCommand("DROP TABLE IF EXISTS Profiles;")
   customCommand("DROP TABLE IF EXISTS JobExperience;")
   customCommand("DROP TABLE IF EXISTS Education;")
