@@ -1,1 +1,0 @@
-Pizzahut={'email': True, 'sms_notif': True, 'targets_advertising': True, 'language': 'en-US'}
