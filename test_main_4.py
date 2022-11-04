@@ -26,7 +26,7 @@ def test_numOfAccts():
             "BurgerKing@2", "BurgerKing@2", "Santi", "Pinkman",
             "burg@burg.com", "999-999-9999", "Signup", "Exit"
         ]
-    )  #Was missing double passwords and some lastnames got doubled which isnt allowed because last names need to be unique.
+    )  # It Was missing double passwords and some lastnames got doubled which isnt allowed because last names need to be unique.
     main.main()
     assert getRecordCount() == 10
 
