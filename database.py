@@ -719,14 +719,18 @@ def getOthersJobs(userId=-1,
         .format(userId)).fetchall()
 
 
-def removeJobApplication(jobPostId,userId = -1, connection=sqlite3.connect("inCollege.db")):
+def removeJobApplication(jobPostId,
+                         userId=-1,
+                         connection=sqlite3.connect("inCollege.db")):
     if (userId == -1):
         userId = authUser()[1]
     if (userId == None):
         pass
     connection.execute(
-        "DELETE FROM Applications WHERE jobPostId = {0} and id = {1};".format(jobPostId,userId))
+        "DELETE FROM Applications WHERE jobPostId = {0} and id = {1};".format(
+            jobPostId, userId))
     connection.commit()
+
 
 def getUsersApplication(userId=-1, connection=sqlite3.connect("inCollege.db")):
     if (userId == -1):
@@ -734,7 +738,8 @@ def getUsersApplication(userId=-1, connection=sqlite3.connect("inCollege.db")):
     if (userId == None):
         pass
     return connection.execute(
-        "SELECT  position, jobPostId, toBeDeleted FROM Applications WHERE id={0};".format(userId)).fetchall()
+        "SELECT  position, jobPostId, toBeDeleted FROM Applications WHERE id={0};"
+        .format(userId)).fetchall()
 
 
 def apply(jobPostId,
@@ -747,11 +752,14 @@ def apply(jobPostId,
         userId = authUser()[1]
     if (userId == None):
         pass
-    title = connection.execute("SELECT position FROM JobBoard WHERE jobPostId = {0}".format(jobPostId)).fetchall()[0][0]
+    title = connection.execute(
+        "SELECT position FROM JobBoard WHERE jobPostId = {0}".format(
+            jobPostId)).fetchall()[0][0]
     connection.execute(
         "INSERT INTO Applications (id, jobPostId, gradDate, startDate, application, position) VALUES ({0},{1},'{2}','{3}','{4}','{5}')"
         .format(userId, jobPostId, gradDate, startDate, textApp, title))
     connection.commit()
+
 
 def getAppliedJobs(userId=-1, connection=sqlite3.connect("inCollege.db")):
     if (userId == -1):
@@ -759,75 +767,98 @@ def getAppliedJobs(userId=-1, connection=sqlite3.connect("inCollege.db")):
     if (userId == None):
         pass
     return connection.execute(
-        "SELECT Applications.jobPostId, JobBoard.position FROM Applications LEFT JOIN ON JobBoard.jobPostId = Applications.jobPostId WHERE Applications.id={0};".format(userId)).fetchall()
+        "SELECT Applications.jobPostId, JobBoard.position FROM Applications LEFT JOIN ON JobBoard.jobPostId = Applications.jobPostId WHERE Applications.id={0};"
+        .format(userId)).fetchall()
+
 
 def getJobTitles(jobPostId, connection=sqlite3.connect("inCollege.db")):
     return connection.execute(
-        "SELECT position FROM JobBoard WHERE jobPostId = {0};".format(jobPostId )).fetchall()[0]
+        "SELECT position FROM JobBoard WHERE jobPostId = {0};".format(
+            jobPostId)).fetchall()[0]
 
-def getSavedJobs(userId=-1, connection=sqlite3.connect("inCollege.db")):# Returns the saved jobs jobIds and position names in a list tuple
+
+def getSavedJobs(
+    userId=-1,
+    connection=sqlite3.connect("inCollege.db")
+):  # Returns the saved jobs jobIds and position names in a list tuple
     if (userId == -1):
         userId = authUser()[1]
     if (userId == None):
         pass
-    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}".format(userId)).fetchone()[0]
-    if(jobs==""):
+    jobs = connection.execute(
+        "SELECT savedJobs FROM UserData WHERE id = {0}".format(
+            userId)).fetchone()[0]
+    if (jobs == ""):
         return None
     jobIds = jobs.split(",")
     print(jobs)
     savedJobsIdsAndPositions = []
     for id in jobIds:
-        posit = connection.execute("SELECT position FROM JobBoard WHERE jobPostId = {0}".format(id)).fetchone()[0]
-        savedJobsIdsAndPositions.append((id,posit))
+        posit = connection.execute(
+            "SELECT position FROM JobBoard WHERE jobPostId = {0}".format(
+                id)).fetchone()[0]
+        savedJobsIdsAndPositions.append((id, posit))
     return savedJobsIdsAndPositions
-  
-def saveJobs(jobPostId,userId=-1, connection=sqlite3.connect("inCollege.db")):
+
+
+def saveJobs(jobPostId, userId=-1, connection=sqlite3.connect("inCollege.db")):
     if (userId == -1):
         userId = authUser()[1]
     if (userId == None):
         pass
-    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}".format(userId)).fetchall()[0][0]
-    if(jobs == None or jobs == ""):
+    jobs = connection.execute(
+        "SELECT savedJobs FROM UserData WHERE id = {0}".format(
+            userId)).fetchall()[0][0]
+    if (jobs == None or jobs == ""):
         jobs = str(jobPostId)
-    elif(str(jobPostId) in jobs): 
+    elif (str(jobPostId) in jobs):
         return None
     else:
-        jobs=jobs[0]
-        jobs+=","+str(jobPostId)
-    connection.execute("UPDATE UserData SET savedJobs = '{0}' WHERE id = {1};".format(jobs,userId))
+        jobs = jobs[0]
+        jobs += "," + str(jobPostId)
+    connection.execute(
+        "UPDATE UserData SET savedJobs = '{0}' WHERE id = {1};".format(
+            jobs, userId))
     connection.commit()
 
-def removeSavedJobs(jobPostId,userId=-1, connection=sqlite3.connect("inCollege.db")):
+
+def removeSavedJobs(jobPostId,
+                    userId=-1,
+                    connection=sqlite3.connect("inCollege.db")):
     if (userId == -1):
         userId = authUser()[1]
     if (userId == None):
         pass
-    jobs = connection.execute("SELECT savedJobs FROM UserData WHERE id = {0}".format(userId)).fetchall()
-    if(jobs == []):
+    jobs = connection.execute(
+        "SELECT savedJobs FROM UserData WHERE id = {0}".format(
+            userId)).fetchall()
+    if (jobs == []):
         return None
     jobs = jobs[0][0]
-    if str(jobPostId) in jobs: 
-        jobs = jobs.replace(str(jobPostId),"")
-        jobs = jobs.replace(",,",",")
-        if(jobs[-1]==","):
-            jobs=jobs[0:-1]
-          
-        connection.execute("UPDATE UserData SET savedJobs = '{0}' WHERE id = {1};".format(jobs,userId))
+    if str(jobPostId) in jobs:
+        jobs = jobs.replace(str(jobPostId), "")
+        jobs = jobs.replace(",,", ",")
+        if (jobs[-1] == ","):
+            jobs = jobs[0:-1]
+
+        connection.execute(
+            "UPDATE UserData SET savedJobs = '{0}' WHERE id = {1};".format(
+                jobs, userId))
         connection.commit()
 
 
-def removeJobPost(jobPostId, connection=sqlite3.connect("inCollege.db")):#Removes job post, updates Applications to be deleted, and removes saved jobs
-    connection.execute("UPDATE Applications SET toBeDeleted = 1 WHERE jobPostId = {0};".format(jobPostId))
+def removeJobPost(
+    jobPostId, connection=sqlite3.connect("inCollege.db")
+):  #Removes job post, updates Applications to be deleted, and removes saved jobs
+    connection.execute(
+        "UPDATE Applications SET toBeDeleted = 1 WHERE jobPostId = {0};".
+        format(jobPostId))
     connection.execute(
         "DELETE FROM JobBoard WHERE jobPostId = {0};".format(jobPostId))
     connection.commit()
     allIds = connection.execute("SELECT id FROM UserLogin").fetchall()
     for id in allIds:
         removeSavedJobs(id[0])
-
-
-
-
 
     #   #Saved
     # connection.execute("""CREATE TABLE IF NOT EXISTS Saved
