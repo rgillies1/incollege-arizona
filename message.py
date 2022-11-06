@@ -5,7 +5,7 @@ def messages():
   inbox = getInbox()
   valid_inputs = ["1", "2", "Exit"]
   selection = ""
-  accType = isUserPlus() #returns False for Standard and True for Plus
+  accType = isUserPlus()  #returns False for Standard and True for Plus
 
   while selection != "Exit":
     print("\n============ Messaging ============")
@@ -30,7 +30,7 @@ def messages():
             print("{0}. Message from {1} (UNREAD):".format(index, username[0]))
           else:
             print("{0}. Message from {1}:".format(index, username[0]))
-          print("\t"+message[0])
+          print("\t" + message[0])
 
         selection = input(
           "Select a message to read, or type 'Exit' to go back: ")
@@ -45,7 +45,7 @@ def messages():
             message = selectedMessage[3][0]
             isRead = selectedMessage[4]
             print("Message from {0}:".format(username))
-            print("\t"+message + '\n')
+            print("\t" + message + '\n')
 
             if (not isRead):
               markAsRead(messageId)
@@ -111,28 +111,24 @@ def messages():
           continue
 
       elif (selection == "2"):
-        if accType == 0:
-          print("\nYou need a Plus Account to do this")
-          pass
-        else:
-          allUsers = userRecords()
-          index = 0
-          for user in allUsers:
-            index = index + 1
-            print(str(index) + ". " + str(user[1]))
-  
-          selection = input(
-            "Select a user from above to send a message to, or type 'Exit': ")
-  
-          selection = int(selection) if selection.isdigit() else "Exit"
-  
-          if selection in range(1, len(allUsers) + 1):
-            receiver = allUsers[selection - 1]
-            if receiver[1] not in getFriends(): 
-              if accType == 0:
-                print("\nI'm sorry, you are not friends with that person.\n")
-              else:
-                message = input("Enter you message for {0}: ".format(
-                  receiver[1]))
-                sendMessage(receiver[0], message)
-                print("Message sent to {0}!".format(receiver[1]))
+        allUsers = userRecords()
+        index = 0
+        for user in allUsers:
+          index = index + 1
+          print(str(index) + ". " + str(user[1]))
+
+        selection = input(
+          "Select a user from above to send a message to, or type 'Exit': ")
+
+        selection = int(selection) if selection.isdigit() else "Exit"
+
+        if selection in range(1, len(allUsers) + 1):
+          receiver = allUsers[selection - 1]
+          if receiver[1] not in getFriends():
+            if accType == 0:
+              print("\nI'm sorry, you are not friends with that person.\n")
+            else:
+              message = input("Enter you message for {0}: ".format(
+                receiver[1]))
+              sendMessage(receiver[0], message)
+              print("Message sent to {0}!".format(receiver[1]))
