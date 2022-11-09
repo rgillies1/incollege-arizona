@@ -22,7 +22,7 @@ def newSkill():#New Skill Page, still under construction
     elif option == '4':
         print("This feature is under construction")
         newSkill()
-    elif option == 5:
+    elif option == '5':
         print("This feature is under construction")
         newSkill()
     elif option == '6':
