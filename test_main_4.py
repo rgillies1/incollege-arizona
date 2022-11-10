@@ -9,27 +9,26 @@ def test_numOfAccts():
     set_keyboard_input(
         [
             "Signup", "Dominos", "Dominos@2", "Dominos@2", "Mohammed", "Haque",
-            "dom@dom.com", "000-000-0000", "2", "Signup", "Popeyes", "Popeyes@2",
+            "dom@dom.com", "000-000-0000", "Signup", "Popeyes", "Popeyes@2",
             "Popeyes@2", "David", "Hamilton", "pop@pop.com", "111-111-1111",
-            "1", "Signup", "Pizzahut", "Pizzahut@2", "Pizzahut@2", "John", "Ha",
-            "piz@piz.com", "222-222-2222", "2", "Signup", "Starbucks",
+            "Signup", "Pizzahut", "Pizzahut@2", "Pizzahut@2", "John", "Ha",
+            "piz@piz.com", "222-222-2222", "Signup", "Starbucks",
             "Starbucks@2", "Starbucks@2", "Arthur", "Gusmao De Almeida",
-            "star@star.com", "333-333-3333", "2", "Signup", "Dunkins", "Dunkins@2",
+            "star@star.com", "333-333-3333", "Signup", "Dunkins", "Dunkins@2",
             "Dunkins@2", "Raymond", "Gillies", "dunk@dunk.com", "444-444-4444",
-            "1", "Signup", "Tacobell", "Tacobell@2", "Tacobell@2", "Mo", "Haq",
-            "taco@taco.com", "555-555-5555", "1", "Signup", "Wendys", "Wendys@2",
-            "Wendys@2", "Dave", "Ham", "wen@wen.com", "666-666-6666", "1", "Signup",
+            "Signup", "Tacobell", "Tacobell@2", "Tacobell@2", "Mo", "Haq",
+            "taco@taco.com", "555-555-5555", "Signup", "Wendys", "Wendys@2",
+            "Wendys@2", "Dave", "Ham", "wen@wen.com", "666-666-6666", "Signup",
             "Pollotrop", "Pollotrop@2", "Pollotrop@2", "Jon", "H",
-            "pol@pol.com", "777-777-7777", "2", "Signup", "McDonalds",
+            "pol@pol.com", "777-777-7777", "Signup", "McDonalds",
             "McDonalds@2", "McDonalds@2", "Art", "Almieda De Gusmao",
-            "mc@mc.com", "888-888-8888", "2", "Signup", "BurgerKing",
+            "mc@mc.com", "888-888-8888", "Signup", "BurgerKing",
             "BurgerKing@2", "BurgerKing@2", "Santi", "Pinkman",
-            "burg@burg.com", "999-999-9999", "1", "Signup", "Exit"
+            "burg@burg.com", "999-999-9999", "Signup", "Exit"
         ]
-    )  #Was missing double passwords and some lastnames got doubled which isnt allowed because last names need to be unique.
-
+    )  # It Was missing double passwords and some lastnames got doubled which isnt allowed because last names need to be unique.
     main.main()
-    assert getRecordCount() == 10 
+    assert getRecordCount() == 10
 
 
 def test_friendSearchLastName():

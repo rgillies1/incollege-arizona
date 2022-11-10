@@ -3,22 +3,22 @@ import builtins
   
     
 def addNewUsers(i=-1):#Adds users one at a time.  if no user is specified it goes in order from list
-  users = [["Dominos", "Dominos@2", "Mohammed", "Haque", "dom@dom.com", "000-000-0000",0],
-["Popeyes", "Popeyes@2", "David", "Hamilton", "pop@pop.com", "111-111-1111",1],
-["Pizzahut", "Pizzahut@2", "John", "Ha", "piz@piz.com", "222-222-2222",0],
-["Starbucks", "Starbucks@2", "Arthur", "Gusmao De Almeida", "star@star.com", "333-333-3333",1],
-["Dunkins", "Dunkins@2", "Raymond", "Gillies", "dunk@dunk.com", "444-444-4444",0],
-["Tacobell", "Tacobell@2", "Mo", "Haq", "taco@taco.com", "555-555-5555",1],
-["Wendys", "Wendys@2", "David", "H", "wen@wen.com", "666-666-6666",0],
-["Pollotrop", "Pollotrop@2", "Jacob", "Hawk", "pol@pol.com", "777-777-7777",1],
-["McDonalds", "McDonalds@2", "Lucas", "Firmino", "mc@mc.com", "888-888-8888",0],
-["BurgerKing", "BurgerKing@2", "Santi", "Pinkman", "burg@burg.com", "999-999-9999",1]]
+  users = [["Dominos", "Dominos@2", "Mohammed", "Haque", "dom@dom.com", "000-000-0000"],
+["Popeyes", "Popeyes@2", "David", "Hamilton", "pop@pop.com", "111-111-1111"],
+["Pizzahut", "Pizzahut@2", "John", "Ha", "piz@piz.com", "222-222-2222"],
+["Starbucks", "Starbucks@2", "Arthur", "Gusmao De Almeida", "star@star.com", "333-333-3333"],
+["Dunkins", "Dunkins@2", "Raymond", "Gillies", "dunk@dunk.com", "444-444-4444"],
+["Tacobell", "Tacobell@2", "Mo", "Haq", "taco@taco.com", "555-555-5555"],
+["Wendys", "Wendys@2", "David", "H", "wen@wen.com", "666-666-6666"],
+["Pollotrop", "Pollotrop@2", "Jacob", "Hawk", "pol@pol.com", "777-777-7777"],
+["McDonalds", "McDonalds@2", "Lucas", "Firmino", "mc@mc.com", "888-888-8888"],
+["BurgerKing", "BurgerKing@2", "Santi", "Pinkman", "burg@burg.com", "999-999-9999"]]
   if(i==-1):
     i=getRecordCount()
   if(i==len(users)):
     return None
-  a,b,c,d,e,f,g=users[i]
-  newAccount(a,b,c,d,e,f,g)
+  a,b,c,d,e,f=users[i]
+  newAccount(a,b,c,d,e,f)
 
 def addContacts(i=-1):
   contacts = [["Mohammed", "Haque", "dom@dom.com", "100-000-0000"],
@@ -55,8 +55,6 @@ def clearTables():#Clears and renews all tables
   customCommand("DROP TABLE IF EXISTS Profiles;")
   customCommand("DROP TABLE IF EXISTS JobExperience;")
   customCommand("DROP TABLE IF EXISTS Education;")
-  customCommand("DROP TABLE IF EXISTS Messages;")
-  customCommand("DROP TABLE IF EXISTS Inbox;")
   tables()
 '''
 *Retrieved: https://gist.github.com/mauricioaniche/671fb553a81df9e6b29434b7e6e53491
