@@ -20,7 +20,7 @@ def test_message_standard_user():
   output = get_display_output()
   main.main()
   assert output.count("\nI'm sorry, you are not friends with that person.\n") == 1
-  assert output.count("\n\nYou have 1 new message(s)! Selection option 9 to view them.") == 0
+  assert output.count("3. You have one or more unread message(s)!") == 0
   assert getRecordCount("Messages") == 1
 
 def test_plus_user():
@@ -32,8 +32,9 @@ def test_plus_user():
   set_keyboard_input(login + trueMessage1 + deleteMessage + trueMessage2 + exit)
   output = get_display_output()
   main.main()
+  #assert output == []
   assert output.count("I'm sorry, you are not friends with this person") == 0
-  assert output.count("\n\nYou have 1 new message(s)! Selection option 9 to view them.") == 1
+  assert output.count('3. You have one or more unread message(s)!') == 1
   assert getRecordCount("Messages") == 2
 
 def test_user_message_without_friends():

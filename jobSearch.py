@@ -1,9 +1,14 @@
 from importantLinks import importantLinks
 from usefulLinks import usefulLinks
-from database import getRecordCount, newJobPost, getJobBoard, getOthersJobs, getUsersApplication, apply, removeJobPost, getPostersJobs, removeJobApplication, saveJobs, getSavedJobs, removeSavedJobs
+from database import getRecordCount, newJobPost, getJobBoard, getOthersJobs, getUsersApplication, apply, removeJobPost, getPostersJobs, removeJobApplication, saveJobs, getSavedJobs, removeSavedJobs, getNumAppliedJobs, userHasAppliedThisWeek
 
 
 def jobSearch():  #Job search page
+
+    print("\nYou have applied for {0} job(s).\n".format(getNumAppliedJobs()))
+
+    if not userHasAppliedThisWeek():
+        print("Remember - you're going to want to have a job when you graduate. Make sure that you start to apply for jobs today!\n")
     table = "JobBoard"
     print(
         "~~~~Job Board~~~~\n\n1. Job Board \n2. Post a job \n3. UsefulLinks \n4. ImportantLinks \n5. Delete a Job \n6. Apply for Job \n7. Applied Jobs \n8. Available Jobs \n9. Manage Saved Job  \nType \"Exit\" to go back\n"
