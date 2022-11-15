@@ -42,15 +42,46 @@ def test_applied_jobs():
   set_keyboard_input(["7","Exit"])
   output = get_display_output()
   jobSearch()
-  assumedOutput = ["~~~~Job Board~~~~\n\n1. Job Board \n2. Post a job \n3. UsefulLinks \n4. ImportantLinks \n5. Delete a Job \n6. Apply for Job \n7. Applied Jobs \n8. Available Jobs \n9. Manage Saved Job  \nType \"Exit\" to go back\n",
-                  "\nPlease select an option from the list above: ",
-                  "\nYou have applied for the following jobs:",
-                  "\t1. Cook",
-                  "\t2. Cook",
-                  "\t3. Software_Intern",
-                   "",
-                  "~~~~Job Board~~~~\n\n1. Job Board \n2. Post a job \n3. UsefulLinks \n4. ImportantLinks \n5. Delete a Job \n6. Apply for Job \n7. Applied Jobs \n8. Available Jobs \n9. Manage Saved Job  \nType \"Exit\" to go back\n",
-                  "\nPlease select an option from the list above: ",]
+  assumedOutput = [
+  '\n'
+       'You have applied for 3 job(s).\n',
+        '~~~~Job Board~~~~\n'
+        '\n'
+        '1. Job Board \n'
+        '2. Post a job \n'
+        '3. UsefulLinks \n'
+        '4. ImportantLinks \n'
+        '5. Delete a Job \n'
+        '6. Apply for Job \n'
+        '7. Applied Jobs \n'
+        '8. Available Jobs \n'
+        '9. Manage Saved Job  \n'
+        'Type "Exit" to go back\n',
+        '\n'
+        'Please select an option from the list above: ',
+        '\n'
+        'You have applied for the following jobs:',
+        '\t1. Cook',
+        '\t2. Cook',
+        '\t3. Software_Intern',
+        '',
+       '\n'
+       'You have applied for 3 job(s).\n',
+        '~~~~Job Board~~~~\n'
+        '\n'
+        '1. Job Board \n'
+        '2. Post a job \n'
+        '3. UsefulLinks \n'
+        '4. ImportantLinks \n'
+        '5. Delete a Job \n'
+        '6. Apply for Job \n'
+        '7. Applied Jobs \n'
+        '8. Available Jobs \n'
+        '9. Manage Saved Job  \n'
+        'Type "Exit" to go back\n',
+        '\n'
+        'Please select an option from the list above: ',
+       ]
   assert assumedOutput == output
   
 def test_delete_jobs():
