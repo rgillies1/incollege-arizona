@@ -1,3 +1,15 @@
+commit 67720be7277dc0bfb3404bc2ef0eb437895f9523
+Author: JohnHaaa <112509498+JohnHaaa@users.noreply.github.com>
+Date:   Sat Nov 19 10:50:35 2022 -0500
+
+    11/19/2022
+
+commit 8f726a5784321895fhb3404bc2eg0eb985321f0077
+Author: John Ha <johnha@Johns-MBP.home>
+Date:   Fri Nov 18 20:18:35 2022 -0500
+
+    11/18/2022
+
 commit 36081f5e5b1965941688412db247fdfd1ed9d905
 Author: John Ha <johnha@Johns-MBP.home>
 Date:   Thu Nov 17 20:44:03 2022 -0500
